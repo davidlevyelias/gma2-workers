@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"Lua.runtime.version": "Lua 5.3",
+		"lua.debug.settings.luaVersion": "lua53",
+		"Lua.diagnostics.globals": [
+			"gma"
+		]
+	}
+}

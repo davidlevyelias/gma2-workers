@@ -1,0 +1,74 @@
+---@class WorkerTask
+---@field func fun(...: any): any
+---@field args table?
+
+---@class WorkerResult
+---@field success boolean
+---@field data any
+
+---@class WorkerResponse
+---@field duration number
+---@field workerCount integer
+---@field jobId string
+---@field result table<integer, WorkerResult>
+
+---@alias WorkerMode "timer"|"cmd"
+
+---@class WorkerJob
+---@field tasks WorkerTask[]
+---@field onComplete fun(response: WorkerResponse)?
+---@field results table<integer, WorkerResult>
+---@field totalWorkers integer
+---@field startTime number
+---@field mode WorkerMode
+---@field alias string?
+
+---@type table<string, WorkerJob>
+local activeJobs = {}
+
+local Utils = require("src.utils")
+
+local Registry = {}
+
+---@param tasks WorkerTask[]
+---@param mode WorkerMode
+---@param onComplete fun(response: WorkerResponse)?
+---@return string jobId
+---@return WorkerJob job
+function Registry.createJob(tasks, mode, onComplete)
+    local jobId = Utils.generateJobId()
+    local job = {
+        tasks = tasks,
+        onComplete = onComplete,
+        results = {},
+        totalWorkers = #tasks,
+        startTime = os.clock(),
+        mode = mode,
+        alias = nil
+    }
+
+    activeJobs[jobId] = job
+    return jobId, job
+end
+
+---@param jobId string
+---@return WorkerJob|nil
+function Registry.get(jobId)
+    return activeJobs[jobId]
+end
+
+---@param jobId string
+---@param alias string
+function Registry.setAlias(jobId, alias)
+    local job = activeJobs[jobId]
+    if job then
+        job.alias = alias
+    end
+end
+
+---@param jobId string
+function Registry.remove(jobId)
+    activeJobs[jobId] = nil
+end
+
+return Registry
