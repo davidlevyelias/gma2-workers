@@ -5,5 +5,11 @@
         "external": {
             "enabled": false
         }
+    },
+    "obfuscation": {
+        "tool": "internal",
+        "config": {
+            "minify": true
+        }
     }
 }

@@ -9,6 +9,10 @@
 		"lua.debug.settings.luaVersion": "lua53",
 		"Lua.diagnostics.globals": [
 			"gma"
+		],
+		"Lua.workspace.ignoreDir": [
+			".vscode",
+			"dist/"
 		]
 	}
 }
