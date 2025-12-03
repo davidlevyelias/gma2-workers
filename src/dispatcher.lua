@@ -33,13 +33,11 @@ end
 ---@param workerCount integer
 ---@param mode WorkerMode
 local function startWorkers(jobId, workerCount, mode)
-    if mode == "timer" then
-        dispatchTimerWorkers(jobId, workerCount)
-    elseif mode == "cmd" then
+    if mode == "cmd" then
         dispatchCmdWorkers(jobId, workerCount)
-    else
-        gma.echo(string.format("GMA2 Workers: Unknown mode '%s'", tostring(mode)))
+        return
     end
+    dispatchTimerWorkers(jobId, workerCount)
 end
 
 ---@param config {tasks: WorkerTask[], onComplete?: fun(response: WorkerResponse), mode?: WorkerMode, workers?: integer}
@@ -66,14 +64,10 @@ local function dispatchInternal(config, awaiting)
     end
 
     if (not awaiting) and type(onComplete) ~= "function" then
-        gma.echo("GMA2 Workers: RunAsync requires an onComplete callback")
-        return nil
+        error("RunAsync requires an onComplete callback")
     end
 
     local jobId, job = Registry.createJob(tasks, mode, onComplete, awaiting, workerThreads)
-
-    gma.echo(string.format("GMA2 Workers: Spawning %d workers for %d tasks (Mode: %s)", workerThreads, taskCount, mode))
-
     startWorkers(jobId, workerThreads, mode)
 
     gma.sleep(0.01)
