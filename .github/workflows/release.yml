@@ -32,7 +32,7 @@ jobs:
         id: artifact
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          FILE="dist/gma2-workers-v${VERSION}.lua"
+          FILE="dist/gma2workers_v${VERSION}.lua"
           if [ ! -f "$FILE" ]; then
             echo "Package file $FILE not found" >&2
             exit 1
