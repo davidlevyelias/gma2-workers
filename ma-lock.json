@@ -2,5 +2,6 @@
   "schema": 1,
   "platform": "ma2",
   "manifestSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "registryFingerprint": "81213f7eb5bacea28414cd139169cfd2976cdce3154d63a75bceb5f1c41cb2d7",
   "dependencies": {}
 }

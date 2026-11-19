@@ -4,7 +4,7 @@
   "description": "High-Performance Parallel Processing Library for GrandMA2 Lua Engine",
   "main": "init.lua",
   "scripts": {
-    "pack": "npx luapack bundle --config luapack.config.json --verbose"
+    "pack": "luapack bundle --config luapack.config.json --verbose"
   },
   "keywords": [],
   "author": "David Levy Elias",
