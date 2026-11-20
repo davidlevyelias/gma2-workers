@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "name": "gma2_workers",
+  "name": "gma2-workers",
   "platform": "ma2",
   "exports": [
     "init.lua",

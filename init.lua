@@ -11,7 +11,7 @@ local gma2Workers = {}
 
 gma2Workers.info = {
     name = "gma2_workers",
-    version = "1.1.2",
+    version = "1.1.3",
     author = "David Levy Elias",
 }
 

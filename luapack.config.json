@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/davidlevyelias/LuaPack/v2.1.0/config.schema.json",
     "schemaVersion": 2,
     "entry": "./init.lua",
-    "output": "dist/gma2_workers.lua",
+    "output": "dist/gma2-workers.lua",
     "luaVersion": "5.3",
     "packages": {
         "default": {
