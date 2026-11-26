@@ -17,46 +17,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Check the tag matches package.json
+        run: test "${{ github.ref_name }}" = "v$(node -p "require('./package.json').version")"
 
       - name: Build package
-        run: |
-          mkdir -p dist
-          npm run pack
+        run: npm run pack
 
-      - name: Determine artifact path
+      - name: Name the bundle after the version
         id: artifact
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          FILE="dist/gma2workers_v${VERSION}.lua"
-          if [ ! -f "$FILE" ]; then
-            echo "Package file $FILE not found" >&2
-            exit 1
-          fi
+          FILE="dist/gma2-workers_v${VERSION}.lua"
+          cp dist/gma2-workers.lua "$FILE"
           echo "path=$FILE" >> "$GITHUB_OUTPUT"
-          echo "name=$(basename "$FILE")" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.artifact.outputs.path }}
-          asset_name: ${{ steps.artifact.outputs.name }}
-          asset_content_type: text/plain
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            "${{ steps.artifact.outputs.path }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
